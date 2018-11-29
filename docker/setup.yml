@@ -1,0 +1,10 @@
+---
+- include_vars: vars.yml
+
+  #- name: Install pip
+  #apt: name=python-pip state=present
+  #become: yes
+
+  #- name: Install Docker python library
+  #pip: name=docker-py state=present
+  #become: yes

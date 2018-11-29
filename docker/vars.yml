@@ -1,0 +1,9 @@
+treescale_user: user
+treescale_password: password
+treescale_repo: repo.treescale.com
+
+base_dir: /data/jbucyber/docker
+
+docker_images:
+    - client
+    - server

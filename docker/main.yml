@@ -1,0 +1,53 @@
+---
+#- name: Getting current AWS ECR credentials
+#  shell: "aws ecr get-login --no-include-email --region us-east-1"
+#  register: ecr_results
+
+- set_fact:
+      date_tag="{{ansible_date_time.year}}{{ ansible_date_time.month }}{{ ansible_date_time.day }}-{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}"
+#      ecr_password="{{ ecr_results.stdout.split(' ')[5] }}"
+#      ecr_registry="{{ ecr_results.stdout.split(' ')[8] }}"
+
+- name: Docker login
+  docker_login:
+      username: "{{ treescale_user }}"
+      password: "{{ treescale_password }}"
+      registry_url: "{{ treescale_repo }}"
+
+#  docker_image:
+#    name: "{{ item[2] }}/{{ item[0].name }}"
+#    tag: "{{ item[1] }}"
+#    path: "/etc/ansible/playbooks/docker/{{ item[0].directory }}"
+#    force: true
+#    pull: true
+#    state: present
+
+- name: Build Docker images from Dockerfile
+  shell: docker build --pull -t "{{ item[2] }}/{{ item[0] }}:{{ item[1] }}" .
+  args:
+      chdir: "{{ base_dir }}/{{ item[0] }}"
+  with_nested:
+      - "{{ docker_images }}"
+      - [
+          "latest",
+#          "{{ date_tag }}"
+        ]
+      - [
+          # "{{ treescale_user }}",
+          "{{ treescale_repo }}/{{ treescale_user }}"
+        ]
+
+#- name: Tagging Docker images
+
+- name: Pushing Docker images
+  shell: docker push "{{ item[2] }}/{{ item[0] }}:{{ item[1] }}"
+  with_nested:
+      - "{{ docker_images }}"
+      - [
+          "latest",
+#          "{{ date_tag }}"
+        ]
+      - [
+          # "{{ treescale_user }}",
+          "{{ treescale_repo }}/{{ treescale_user }}"
+        ]
