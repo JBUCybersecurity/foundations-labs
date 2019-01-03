@@ -10,21 +10,22 @@ from ftplib import FTP
 
 max_sleep = 30
 sites = ['google.com','yahoo.com','ford.com','tesla.com','nissandriven.com']
-ftp_user = "neo"
+ftp_user = "admin"
 ftp_pass = "thematrixhasyou"
 http_user = "admin"
 http_pass = "thematrixhasyou"
 
 def ftp():
+    ftp = FTP(target_host)
     if random.randint(1,10) % 2 == 0:
         try:
-            ftp = FTP(target_host,ftp_user,ftp_pass)
+            ftp.login(ftp_user,ftp_pass)
         except:
-            ftp = FTP(target_host)
+            ftp.login()
     else:
-        ftp = FTP(target_host)
-    ftp.login()
-    ftp.retrlines('LIST')
+        ftp.login()
+    # ftp.retrlines('LIST')
+    ftp.dir()
     ftp.quit()
 
 def ping():
