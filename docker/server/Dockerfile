@@ -5,9 +5,10 @@ MAINTAINER "Steve Helms" <SHelms@jbu.edu>
 RUN apk update && \
     apk upgrade && \
     apk --update add --no-cache vsftpd openssl supervisor nginx \
-    bind-tools curl tcpdump && \
+    bind-tools curl tcpdump shadow && \
     apk --update add --no-cache --virtual .build-dependencies \
-    build-base curl linux-pam-dev openssl
+    build-base curl linux-pam-dev openssl && \
+    usermod -d /data/ftp vsftp
 
 RUN \
     mkdir /build && \
