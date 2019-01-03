@@ -2,7 +2,7 @@ FROM alpine:edge
 
 MAINTAINER "Steve Helms" <SHelms@jbu.edu>
 
-RUN apk --update add python3 supervisor \
+RUN apk --update add python3 supervisor bind-tools \
     && pip3 install --upgrade pip requests \
     && rm -rf /var/cache/apk/*
 

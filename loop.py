@@ -10,13 +10,23 @@ from ftplib import FTP
 max_sleep = 30
 
 def ftp():
-    ftp = FTP(target_host)
+    if random.randint(1,10) % 2 == 0:
+        try:
+            ftp = FTP(target_host,ftp_user,ftp_pass)
+        except:
+            ftp = FTP(target_host)
+    else:
+        ftp = FTP(target_host)
     ftp.login()
     ftp.retrlines('LIST')
     ftp.quit()
 
 def ping():
     response = os.system('ping -c 3 '+ target_host)
+
+def dig():
+    fqdn = random.choice(sites)
+    response = os.system('dig '+ fqdn)
 
 def sleepRand():
     time.sleep(random.randint(3,max_sleep))
@@ -34,7 +44,11 @@ if len(sys.argv) < 2:
     sys.exit()
 
 target_host = sys.argv[1]
-available = [ftp,http,ping]
+available = [dig,ftp,http,ping]
+sites = ['google.com','yahoo.com','ford.com','tesla.com','nissandriven.com']
+
+ftp_user = "neo"
+ftp_pass = "thematrixhasyou"
 
 while True:
     # Sleep a random amount of time
