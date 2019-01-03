@@ -5,9 +5,15 @@ import sys
 import time
 import random
 import requests
+from requests.auth import HTTPBasicAuth
 from ftplib import FTP
 
 max_sleep = 30
+sites = ['google.com','yahoo.com','ford.com','tesla.com','nissandriven.com']
+ftp_user = "neo"
+ftp_pass = "thematrixhasyou"
+http_user = "admin"
+http_pass = "thematrixhasyou"
 
 def ftp():
     if random.randint(1,10) % 2 == 0:
@@ -35,6 +41,11 @@ def http():
     r = requests.get('http://'+ target_host)
     print(r.text)
 
+def http_auth():
+    r = requests.get('http://'+ target_host+'/secure/',
+            auth=(http_user,http_pass))
+    print(r.text)
+
 
 # ----
 # Main
@@ -44,11 +55,7 @@ if len(sys.argv) < 2:
     sys.exit()
 
 target_host = sys.argv[1]
-available = [dig,ftp,http,ping]
-sites = ['google.com','yahoo.com','ford.com','tesla.com','nissandriven.com']
-
-ftp_user = "neo"
-ftp_pass = "thematrixhasyou"
+available = [dig,ftp,http,ping,http_auth]
 
 while True:
     # Sleep a random amount of time
